@@ -23,6 +23,10 @@ export default function App() {
   const [showAllRecipes, setShowAllRecipes] = useState(false)
   const [showExitConfirm, setShowExitConfirm] = useState(false)
   const leavingRef = useRef(false)
+  const selectedRecipeRef = useRef(selectedRecipe)
+  const showAllRecipesRef = useRef(showAllRecipes)
+  selectedRecipeRef.current = selectedRecipe
+  showAllRecipesRef.current = showAllRecipes
 
   const t = useSettingsStore((s) => s.t)
   const theme = useSettingsStore((s) => s.theme)
@@ -41,9 +45,9 @@ export default function App() {
 
     const handlePopState = () => {
       if (leavingRef.current) return
-      if (selectedRecipe) {
+      if (selectedRecipeRef.current) {
         setSelectedRecipe(null)
-      } else if (showAllRecipes) {
+      } else if (showAllRecipesRef.current) {
         setShowAllRecipes(false)
       } else if (showExitConfirm) {
         setShowExitConfirm(false)
