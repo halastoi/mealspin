@@ -25,6 +25,8 @@ export default function App() {
   const leavingRef = useRef(false)
 
   const t = useSettingsStore((s) => s.t)
+  const theme = useSettingsStore((s) => s.theme)
+  const isLightTheme = theme === 'light' || theme === 'cream'
   const loadRecipes = useSpinStore((s) => s.loadRecipes)
   const isLoading = useSpinStore((s) => s.isLoading)
 
@@ -77,10 +79,10 @@ export default function App() {
             alignItems: 'center',
             justifyContent: 'space-between',
             flexShrink: 0,
-            background: 'rgba(0,0,0,0.2)',
+            background: isLightTheme ? 'var(--bg-secondary)' : 'rgba(0,0,0,0.2)',
             backdropFilter: 'blur(30px)',
             WebkitBackdropFilter: 'blur(30px)',
-            borderBottom: '1px solid rgba(255,255,255,0.04)',
+            borderBottom: isLightTheme ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.04)',
           }}
         >
           <div>

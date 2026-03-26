@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useSettingsStore } from '../../stores/useSettingsStore'
+import { useSettingsStore, type ThemeMode } from '../../stores/useSettingsStore'
 
 export type Tab = 'spin' | 'favorites' | 'pantry' | 'settings'
 
@@ -56,6 +56,8 @@ function TabIcon({ type, active }: { type: string; active: boolean }) {
 
 export function Navigation({ activeTab, onTabChange }: NavigationProps) {
   const t = useSettingsStore((s) => s.t)
+  const theme = useSettingsStore((s) => s.theme) as ThemeMode
+  const isLight = theme === 'light' || theme === 'cream'
 
   return (
     <nav
@@ -65,10 +67,10 @@ export function Navigation({ activeTab, onTabChange }: NavigationProps) {
         padding: '8px 0',
         paddingTop: '10px',
         paddingBottom: `calc(8px + var(--safe-bottom))`,
-        background: 'rgba(0,0,0,0.4)',
+        background: isLight ? 'var(--bg-secondary)' : 'rgba(0,0,0,0.4)',
         backdropFilter: 'blur(30px)',
         WebkitBackdropFilter: 'blur(30px)',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
+        borderTop: isLight ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.08)',
         flexShrink: 0,
       }}
     >
