@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { useSettingsStore } from './stores/useSettingsStore'
+import { useSpinStore } from './stores/useSpinStore'
 import { Navigation, type Tab } from './components/layout/Navigation'
 import { SpinPage } from './components/spin/SpinPage'
 import { FavoritesPage } from './components/favorites/FavoritesPage'
@@ -24,6 +25,13 @@ export default function App() {
   const leavingRef = useRef(false)
 
   const t = useSettingsStore((s) => s.t)
+  const loadRecipes = useSpinStore((s) => s.loadRecipes)
+  const isLoading = useSpinStore((s) => s.isLoading)
+
+  // Load recipes on mount
+  useEffect(() => {
+    loadRecipes()
+  }, [loadRecipes])
 
   // Back button handling
   useEffect(() => {
@@ -125,6 +133,20 @@ export default function App() {
         {/* Navigation */}
         <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
+
+      {/* Loading overlay */}
+      {isLoading && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 500,
+          background: 'var(--bg-primary)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexDirection: 'column', gap: '16px',
+        }}>
+          <div style={{ fontSize: '48px' }}>🍳</div>
+          <div style={{ fontSize: '16px', fontWeight: 600 }}>MealSpin</div>
+          <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{t('spin.loading')}</div>
+        </div>
+      )}
 
       {/* All Recipes overlay */}
       <AnimatePresence>

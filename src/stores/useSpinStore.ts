@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { Meal, PantryIngredient, RecipeMatch, SpinFilters } from '../types'
-import { allRecipes } from '../data/recipes'
+import { loadAllRecipes } from '../data/recipes'
 import { findMatchingRecipes } from '../utils/matchRecipes'
 
 interface SpinState {
@@ -8,14 +8,15 @@ interface SpinState {
   allIngredients: string[]
   currentMatch: RecipeMatch | null
   isSpinning: boolean
+  isLoading: boolean
   filters: SpinFilters
   history: string[]
+  loadRecipes: () => Promise<void>
   spin: (pantryIngredients: PantryIngredient[]) => void
   setFilters: (filters: Partial<SpinFilters>) => void
   resetHistory: () => void
 }
 
-// Extract unique ingredient names (English) from all recipes
 function extractIngredients(meals: Meal[]): string[] {
   const set = new Set<string>()
   for (const meal of meals) {
@@ -27,19 +28,29 @@ function extractIngredients(meals: Meal[]): string[] {
   return Array.from(set).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
 }
 
-const ingredientList = extractIngredients(allRecipes)
-
 export const useSpinStore = create<SpinState>()((set, get) => ({
-  allMeals: allRecipes,
-  allIngredients: ingredientList,
+  allMeals: [],
+  allIngredients: [],
   currentMatch: null,
   isSpinning: false,
+  isLoading: true,
   filters: {
     cuisines: [],
     categories: [],
     maxMissing: 3,
   },
   history: [],
+
+  loadRecipes: async () => {
+    if (get().allMeals.length > 0) return
+    set({ isLoading: true })
+    const meals = await loadAllRecipes()
+    set({
+      allMeals: meals,
+      allIngredients: extractIngredients(meals),
+      isLoading: false,
+    })
+  },
 
   spin: (pantryIngredients: PantryIngredient[]) => {
     const { allMeals, filters, history } = get()
@@ -49,7 +60,6 @@ export const useSpinStore = create<SpinState>()((set, get) => ({
     const filtersWithMaxMissing = { ...filters }
     const matches = findMatchingRecipes(allMeals, pantryIngredients, filtersWithMaxMissing)
 
-    // Filter out history to avoid repeats
     const fresh = matches.filter((m) => !history.includes(m.meal.id))
     const pool = fresh.length > 0 ? fresh : matches
 
@@ -59,7 +69,6 @@ export const useSpinStore = create<SpinState>()((set, get) => ({
         return
       }
 
-      // Pick from top results with some randomness
       const topCount = Math.min(pool.length, Math.max(3, Math.floor(pool.length * 0.3)))
       const idx = Math.floor(Math.random() * topCount)
       const match = pool[idx]
