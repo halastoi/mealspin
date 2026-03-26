@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export type Language = 'en' | 'ro' | 'ru' | 'es'
-export type ThemeMode = 'dark' | 'light' | 'cream' | 'midnight' | 'amoled' | 'ocean'
+export type ThemeMode = 'dark' | 'light' | 'cream' | 'midnight'
 
 export interface ThemeColors {
   bgPrimary: string
@@ -29,14 +29,14 @@ export const themes: Record<ThemeMode, ThemeColors> = {
   },
   cream: {
     // Warm cream - inspired by Notion/Craft
-    bgPrimary: '#faf8f5',
-    bgSecondary: '#f0ece6',
-    bgCard: '#fffdf9',
-    bgCardHover: '#f5f0ea',
-    bgActive: '#fde8d0',
-    accent: '#b45309',
-    accentGlow: 'rgba(180, 83, 9, 0.15)',
-    accentLight: '#d97706',
+    bgPrimary: '#f8f5f0',
+    bgSecondary: '#ede8e0',
+    bgCard: '#ffffff',
+    bgCardHover: '#f0ebe3',
+    bgActive: '#fce4c8',
+    accent: '#9a3412',
+    accentGlow: 'rgba(154, 52, 18, 0.18)',
+    accentLight: '#c2410c',
   },
   dark: {
     bgPrimary: '#0a0a1a',
@@ -54,26 +54,6 @@ export const themes: Record<ThemeMode, ThemeColors> = {
     bgCard: '#1c2333',
     bgCardHover: '#252d3d',
     bgActive: '#5c3a1a',
-    accent: '#f97316',
-    accentGlow: 'rgba(249, 115, 22, 0.3)',
-    accentLight: '#fb923c',
-  },
-  amoled: {
-    bgPrimary: '#000000',
-    bgSecondary: '#0a0a0a',
-    bgCard: '#141414',
-    bgCardHover: '#1e1e1e',
-    bgActive: '#3a1a0a',
-    accent: '#f97316',
-    accentGlow: 'rgba(249, 115, 22, 0.3)',
-    accentLight: '#fb923c',
-  },
-  ocean: {
-    bgPrimary: '#0a1628',
-    bgSecondary: '#0f1d32',
-    bgCard: '#152640',
-    bgCardHover: '#1c3050',
-    bgActive: '#3d2a1a',
     accent: '#f97316',
     accentGlow: 'rgba(249, 115, 22, 0.3)',
     accentLight: '#fb923c',
