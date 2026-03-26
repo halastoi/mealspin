@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useSpinStore } from '../../stores/useSpinStore'
 import { useSettingsStore } from '../../stores/useSettingsStore'
 import { getText } from '../../types'
+import { useFavoritesStore } from '../../stores/useFavoritesStore'
 import type { Meal } from '../../types'
 
 interface AllRecipesProps {
@@ -14,6 +15,7 @@ const PAGE_SIZE = 20
 
 export function AllRecipes({ onBack, onSelectRecipe }: AllRecipesProps) {
   const allMeals = useSpinStore((s) => s.allMeals)
+  const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
   const t = useSettingsStore((s) => s.t)
   const lang = useSettingsStore((s) => s.language)
   const [search, setSearch] = useState('')
@@ -86,16 +88,23 @@ export function AllRecipes({ onBack, onSelectRecipe }: AllRecipesProps) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           {paged.map((meal) => {
             const name = getText(meal.name, lang)
+            const fav = isFavorite(meal.id)
             return (
-              <button
+              <div
                 key={meal.id}
-                onClick={() => onSelectRecipe(meal)}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: '10px',
-                  padding: '8px 10px', borderRadius: '12px', textAlign: 'left',
+                  display: 'flex', alignItems: 'center',
+                  borderRadius: '12px',
                   background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)',
                 }}
               >
+                <button
+                  onClick={() => onSelectRecipe(meal)}
+                  style={{
+                    flex: 1, display: 'flex', alignItems: 'center', gap: '10px',
+                    padding: '8px 10px', textAlign: 'left',
+                  }}
+                >
                 <img
                   src={meal.thumbnail}
                   alt=""
@@ -113,7 +122,16 @@ export function AllRecipes({ onBack, onSelectRecipe }: AllRecipesProps) {
                     {meal.area} · {meal.category}
                   </div>
                 </div>
-              </button>
+                </button>
+                <button
+                  onClick={() => fav ? removeFavorite(meal.id) : addFavorite(meal)}
+                  style={{ padding: '10px', flexShrink: 0, minWidth: '40px', minHeight: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill={fav ? '#f87171' : 'none'} stroke={fav ? '#f87171' : 'var(--text-muted)'} strokeWidth="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                </button>
+              </div>
             )
           })}
         </div>

@@ -7,6 +7,7 @@ import { SpinButton } from './SpinButton'
 import { RecipeCard } from './RecipeCard'
 import { FilterBar } from './FilterBar'
 import { getText } from '../../types'
+import { useFavoritesStore } from '../../stores/useFavoritesStore'
 import type { Meal } from '../../types'
 
 interface SpinPageProps {
@@ -77,22 +78,37 @@ export function SpinPage({ onSwitchToPantry, onSelectRecipe, onShowAllRecipes }:
             borderRadius: '0 0 12px 12px', maxHeight: '250px', overflowY: 'auto',
             boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
           }}>
-            {searchResults.map((meal) => (
-              <button
-                key={meal.id}
-                onClick={() => { onSelectRecipe(meal); setSearchQuery('') }}
-                style={{
-                  width: '100%', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px',
-                  borderBottom: '1px solid rgba(255,255,255,0.04)', textAlign: 'left',
-                }}
-              >
-                <img src={meal.thumbnail} alt="" style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover' }} />
-                <div>
-                  <div style={{ fontSize: '13px', fontWeight: 500 }}>{getText(meal.name, language)}</div>
-                  <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{meal.area} · {meal.category}</div>
+            {searchResults.map((meal) => {
+              const fav = useFavoritesStore.getState().isFavorite(meal.id)
+              return (
+                <div key={meal.id} style={{
+                  display: 'flex', alignItems: 'center',
+                  borderBottom: '1px solid rgba(255,255,255,0.04)',
+                }}>
+                  <button
+                    onClick={() => { onSelectRecipe(meal); setSearchQuery('') }}
+                    style={{
+                      flex: 1, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: '10px',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <img src={meal.thumbnail} alt="" style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'cover' }} />
+                    <div>
+                      <div style={{ fontSize: '13px', fontWeight: 500 }}>{getText(meal.name, language)}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{meal.area} · {meal.category}</div>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => fav ? useFavoritesStore.getState().removeFavorite(meal.id) : useFavoritesStore.getState().addFavorite(meal)}
+                    style={{ padding: '10px', flexShrink: 0, minWidth: '40px', minHeight: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill={fav ? '#f87171' : 'none'} stroke={fav ? '#f87171' : 'var(--text-muted)'} strokeWidth="2">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                  </button>
                 </div>
-              </button>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>

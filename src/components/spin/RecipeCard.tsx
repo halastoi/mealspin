@@ -3,6 +3,7 @@ import type { RecipeMatch } from '../../types'
 import { getText } from '../../types'
 import { useSettingsStore } from '../../stores/useSettingsStore'
 import { usePantryStore } from '../../stores/usePantryStore'
+import { useFavoritesStore } from '../../stores/useFavoritesStore'
 
 interface RecipeCardProps {
   match: RecipeMatch
@@ -23,7 +24,9 @@ export function RecipeCard({ match, onClick }: RecipeCardProps) {
   const t = useSettingsStore((s) => s.t)
   const lang = useSettingsStore((s) => s.language)
   const hasPantry = usePantryStore((s) => s.ingredients.length > 0)
+  const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore()
   const { meal, matchCount, totalIngredients, missingIngredients, matchPercent } = match
+  const saved = isFavorite(meal.id)
 
   const mealName = getText(meal.name, lang)
   const percentColor = matchPercent >= 80 ? '#4ade80' : matchPercent >= 50 ? '#fbbf24' : '#f87171'
@@ -65,6 +68,22 @@ export function RecipeCard({ match, onClick }: RecipeCardProps) {
           height: '60%',
           background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
         }} />
+
+        {/* Favorite heart */}
+        <button
+          onClick={(e) => { e.stopPropagation(); saved ? removeFavorite(meal.id) : addFavorite(meal) }}
+          style={{
+            position: 'absolute', top: '10px', left: '10px',
+            width: '32px', height: '32px', minWidth: '32px', minHeight: '32px',
+            borderRadius: '50%', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            border: '1px solid rgba(255,255,255,0.15)',
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill={saved ? '#f87171' : 'none'} stroke={saved ? '#f87171' : '#fff'} strokeWidth="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+        </button>
 
         {/* Category badge */}
         <div style={{
