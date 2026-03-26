@@ -1,15 +1,6 @@
-const CACHE_NAME = 'mealspin-v1'
-const APP_SHELL = [
-  '/',
-  '/index.html',
-  '/favicon.svg',
-  '/manifest.json',
-]
+const CACHE_NAME = 'mealspin-v2'
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
-  )
+self.addEventListener('install', () => {
   self.skipWaiting()
 })
 
@@ -26,8 +17,8 @@ self.addEventListener('fetch', (event) => {
   const { request } = event
   if (request.method !== 'GET') return
 
-  // Cache recipe images from TheMealDB CDN on fetch
-  if (request.url.includes('themealdb.com/images')) {
+  // Cache recipe images from external CDNs
+  if (request.url.includes('themealdb.com/images') || request.url.includes('upload.wikimedia.org')) {
     event.respondWith(
       caches.match(request).then((cached) => {
         if (cached) return cached
@@ -37,16 +28,20 @@ self.addEventListener('fetch', (event) => {
             caches.open(CACHE_NAME).then((cache) => cache.put(request, clone))
           }
           return response
-        })
+        }).catch(() => cached || new Response('', { status: 404 }))
       })
     )
     return
   }
 
-  // App shell: cache first, fallback to network
-  if (APP_SHELL.some((url) => request.url.endsWith(url))) {
-    event.respondWith(
-      caches.match(request).then((cached) => cached || fetch(request))
-    )
-  }
+  // Everything else: network first, cache fallback
+  event.respondWith(
+    fetch(request).then((response) => {
+      if (response.ok) {
+        const clone = response.clone()
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone))
+      }
+      return response
+    }).catch(() => caches.match(request))
+  )
 })
