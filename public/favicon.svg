@@ -1,14 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-  <circle cx="24" cy="24" r="22" fill="#f97316" opacity="0.15"/>
-  <circle cx="24" cy="24" r="16" fill="#f97316" opacity="0.25"/>
-  <!-- Fork -->
-  <g stroke="#f97316" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="M18 8v10c0 2.2 1.8 4 4 4h4c2.2 0 4-1.8 4-4V8"/>
-    <line x1="18" y1="14" x2="30" y2="14"/>
-    <line x1="24" y1="22" x2="24" y2="40"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#1a1a2e"/>
+
+  <!-- Plate -->
+  <circle cx="256" cy="270" r="160" fill="#222240" stroke="#f97316" stroke-width="4" opacity="0.6"/>
+  <circle cx="256" cy="270" r="130" fill="#1a1a2e" stroke="rgba(249,115,22,0.3)" stroke-width="2"/>
+
+  <!-- Food icon - bowl with steam -->
+  <ellipse cx="256" cy="290" rx="90" ry="45" fill="#f97316" opacity="0.2"/>
+  <path d="M166 290 Q166 230 256 230 Q346 230 346 290" fill="none" stroke="#f97316" stroke-width="8" stroke-linecap="round"/>
+  <line x1="166" y1="290" x2="346" y2="290" stroke="#f97316" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Steam -->
+  <path d="M210 210 Q210 190 220 180 Q230 170 220 155" stroke="#fb923c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.7"/>
+  <path d="M256 200 Q256 180 266 170 Q276 160 266 140" stroke="#fb923c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M302 210 Q302 190 312 180 Q322 170 312 155" stroke="#fb923c" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.7"/>
+
+  <!-- Fork (left) -->
+  <g stroke="#e4e4e7" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.5">
+    <line x1="120" y1="340" x2="170" y2="250"/>
+    <line x1="130" y1="335" x2="160" y2="270"/>
+    <line x1="140" y1="330" x2="155" y2="280"/>
   </g>
-  <!-- Steam lines -->
-  <path d="M16 6c0-2 2-2 2-4" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
-  <path d="M24 4c0-2 2-2 2-4" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
-  <path d="M32 6c0-2 2-2 2-4" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Knife (right) -->
+  <g stroke="#e4e4e7" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.5">
+    <line x1="392" y1="340" x2="342" y2="250"/>
+    <path d="M350 260 Q355 240 345 230" stroke-width="6"/>
+  </g>
+
+  <!-- Spin arrows around plate -->
+  <path d="M120 200 A160 160 0 0 1 320 130" stroke="#f97316" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <polygon points="320,120 330,140 310,138" fill="#f97316" opacity="0.4"/>
+
+  <path d="M392 340 A160 160 0 0 1 192 410" stroke="#f97316" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.4"/>
+  <polygon points="192,420 182,400 202,402" fill="#f97316" opacity="0.4"/>
 </svg>
