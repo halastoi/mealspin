@@ -9,6 +9,7 @@ const languages: { id: Language; label: string; flag: string }[] = [
 
 const themeOptions: { id: ThemeMode; key: string }[] = [
   { id: 'light', key: 'settings.theme.light' },
+  { id: 'cream', key: 'settings.theme.cream' },
   { id: 'dark', key: 'settings.theme.dark' },
   { id: 'midnight', key: 'settings.theme.midnight' },
   { id: 'amoled', key: 'settings.theme.amoled' },
@@ -56,7 +57,8 @@ function ThemePreview({ themeId }: { themeId: ThemeMode }) {
 
 function getPreviewColors(id: ThemeMode) {
   const map: Record<ThemeMode, { bg: string; card: string; accent: string }> = {
-    light: { bg: '#f5f5f7', card: '#ffffff', accent: '#ea580c' },
+    light: { bg: '#ffffff', card: '#f2f2f4', accent: '#c2410c' },
+    cream: { bg: '#faf8f5', card: '#fffdf9', accent: '#b45309' },
     dark: { bg: '#0a0a1a', card: '#181838', accent: '#f97316' },
     midnight: { bg: '#0d1117', card: '#1c2333', accent: '#f97316' },
     amoled: { bg: '#000000', card: '#141414', accent: '#f97316' },

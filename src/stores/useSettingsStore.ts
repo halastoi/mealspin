@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export type Language = 'en' | 'ro' | 'ru' | 'es'
-export type ThemeMode = 'dark' | 'light' | 'midnight' | 'amoled' | 'ocean'
+export type ThemeMode = 'dark' | 'light' | 'cream' | 'midnight' | 'amoled' | 'ocean'
 
 export interface ThemeColors {
   bgPrimary: string
@@ -17,14 +17,26 @@ export interface ThemeColors {
 
 export const themes: Record<ThemeMode, ThemeColors> = {
   light: {
-    bgPrimary: '#f5f5f7',
-    bgSecondary: '#eeeef0',
-    bgCard: '#ffffff',
-    bgCardHover: '#f0f0f2',
-    bgActive: '#fff0e0',
-    accent: '#ea580c',
-    accentGlow: 'rgba(234, 88, 12, 0.2)',
-    accentLight: '#f97316',
+    // Clean white - inspired by Apple/Notion
+    bgPrimary: '#ffffff',
+    bgSecondary: '#f7f7f8',
+    bgCard: '#f2f2f4',
+    bgCardHover: '#eaeaed',
+    bgActive: '#fff2e8',
+    accent: '#c2410c',
+    accentGlow: 'rgba(194, 65, 12, 0.15)',
+    accentLight: '#ea580c',
+  },
+  cream: {
+    // Warm cream - inspired by Notion/Craft
+    bgPrimary: '#faf8f5',
+    bgSecondary: '#f0ece6',
+    bgCard: '#fffdf9',
+    bgCardHover: '#f5f0ea',
+    bgActive: '#fde8d0',
+    accent: '#b45309',
+    accentGlow: 'rgba(180, 83, 9, 0.15)',
+    accentLight: '#d97706',
   },
   dark: {
     bgPrimary: '#0a0a1a',
@@ -121,6 +133,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'settings.language': 'Language',
     'settings.theme': 'Theme',
     'settings.theme.light': 'Light',
+    'settings.theme.cream': 'Cream',
     'settings.theme.dark': 'Dark',
     'settings.theme.midnight': 'Midnight',
     'settings.theme.amoled': 'AMOLED',
@@ -197,6 +210,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'settings.language': 'Limba',
     'settings.theme': 'Tema',
     'settings.theme.light': 'Luminos',
+    'settings.theme.cream': 'Crem',
     'settings.theme.dark': 'Intunecat',
     'settings.theme.midnight': 'Miezul Noptii',
     'settings.theme.amoled': 'AMOLED',
@@ -273,6 +287,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'settings.language': 'Язык',
     'settings.theme': 'Тема',
     'settings.theme.light': 'Светлая',
+    'settings.theme.cream': 'Кремовая',
     'settings.theme.dark': 'Тёмная',
     'settings.theme.midnight': 'Полночь',
     'settings.theme.amoled': 'AMOLED',
@@ -349,6 +364,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'settings.language': 'Idioma',
     'settings.theme': 'Tema',
     'settings.theme.light': 'Claro',
+    'settings.theme.cream': 'Crema',
     'settings.theme.dark': 'Oscuro',
     'settings.theme.midnight': 'Medianoche',
     'settings.theme.amoled': 'AMOLED',
@@ -423,19 +439,32 @@ function applyTheme(mode: ThemeMode): void {
   root.style.setProperty('--accent-glow', t.accentGlow)
   root.style.setProperty('--accent-light', t.accentLight)
 
-  // Light theme needs different text colors
-  if (mode === 'light') {
-    root.style.setProperty('--text-primary', '#1a1a2e')
-    root.style.setProperty('--text-secondary', '#555570')
-    root.style.setProperty('--text-muted', '#888899')
-    root.style.setProperty('--glass', 'rgba(0, 0, 0, 0.04)')
-    root.style.setProperty('--glass-border', 'rgba(0, 0, 0, 0.08)')
+  // Light themes need different text and glass colors
+  const isLight = mode === 'light' || mode === 'cream'
+  if (isLight) {
+    root.style.setProperty('--text-primary', '#1c1c1e')
+    root.style.setProperty('--text-secondary', '#48484a')
+    root.style.setProperty('--text-muted', '#8e8e93')
+    root.style.setProperty('--glass', 'rgba(0, 0, 0, 0.03)')
+    root.style.setProperty('--glass-border', 'rgba(0, 0, 0, 0.1)')
+    root.style.setProperty('--glass-hover', 'rgba(0, 0, 0, 0.06)')
+    root.style.setProperty('--success', '#16a34a')
+    root.style.setProperty('--danger', '#dc2626')
+    root.style.setProperty('--shadow-sm', '0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06)')
+    root.style.setProperty('--shadow-md', '0 4px 12px rgba(0,0,0,0.08)')
+    root.style.setProperty('--shadow-lg', '0 8px 24px rgba(0,0,0,0.1)')
   } else {
     root.style.setProperty('--text-primary', '#e8e8f0')
     root.style.setProperty('--text-secondary', '#8888aa')
     root.style.setProperty('--text-muted', '#555570')
     root.style.setProperty('--glass', 'rgba(255, 255, 255, 0.04)')
     root.style.setProperty('--glass-border', 'rgba(255, 255, 255, 0.08)')
+    root.style.setProperty('--glass-hover', 'rgba(255, 255, 255, 0.07)')
+    root.style.setProperty('--success', '#4ade80')
+    root.style.setProperty('--danger', '#f87171')
+    root.style.setProperty('--shadow-sm', '0 2px 8px rgba(0,0,0,0.3)')
+    root.style.setProperty('--shadow-md', '0 4px 16px rgba(0,0,0,0.4)')
+    root.style.setProperty('--shadow-lg', '0 8px 32px rgba(0,0,0,0.5)')
   }
 
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', t.bgPrimary)
