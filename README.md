@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# MealSpin - Recipe Generator PWA
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A "What can I cook?" recipe generator. Spin for a random recipe, filter by cuisine and category, manage your pantry ingredients. 656 recipes from around the world, translated in 4 languages.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **656 recipes** from 40+ cuisines (including Romanian, Moldovan, Ukrainian, Balkan, Nordic, Baltic)
+- **4 languages** - UI and recipes in English, Romanian, Russian, Spanish
+- **Spin generator** - random recipe with one tap
+- **Pantry system** - add your ingredients, see what you can cook
+- **Ingredient matching** - shows what you have vs what you need
+- **Favorites** - save recipes you love
+- **Browse all** - paginated list of all recipes with search
+- **Cuisine & category filters** - collapsible, translated
+- **Tap to translate** - tap any ingredient, title, or instruction step to see original English
+- **Imperial to metric** - auto-converts lb→g, oz→g, cups→ml for RO/RU
+- **Measure translations** - cups→cani, tbsp→linguri, etc.
+- **Offline** - works without internet after first load
+- **PWA** - installable on Android/iOS
+- **Dark theme** - 4 themes (Dark, Midnight, AMOLED, Ocean)
+- **Zero ads, zero tracking, zero API calls at runtime**
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + TypeScript + Vite
+- Zustand (state management)
+- Framer Motion (animations)
+- All recipe data embedded locally (no API calls)
+- Wikimedia Commons images (Creative Commons)
 
-## Expanding the ESLint configuration
+## Recipe Sources
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [TheMealDB](https://www.themealdb.com/) - 595 international recipes (CC-BY-SA)
+- 61 original regional recipes (Romania, Moldova, Ukraine, Balkans, Nordic, Baltic)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Development
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Deploy
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+vercel --prod --yes
 ```
+
+## Live
+
+**https://mealspin-mu.vercel.app**
