@@ -35,6 +35,8 @@ export async function loadAllRecipes(): Promise<LocalMeal[]> {
     import('./recipes_chunk17').then((m) => m.recipes_chunk17),
     import('./recipes_chunk18').then((m) => m.recipes_chunk18),
     import('./recipes_chunk19').then((m) => m.recipes_chunk19),
+    import('./recipes_chunk20').then((m) => m.recipes_chunk20),
+    import('./recipes_chunk21').then((m) => m.recipes_chunk21),
   ])
   return chunks.flat()
 }
